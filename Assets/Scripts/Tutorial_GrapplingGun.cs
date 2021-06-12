@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Tutorial_GrapplingGun : MonoBehaviour
 {
@@ -57,11 +58,13 @@ public class Tutorial_GrapplingGun : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if(Mouse.current.leftButton.wasPressedThisFrame)
+        // if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             SetGrapplePoint();
         }
-        else if (Input.GetKey(KeyCode.Mouse0))
+        else if(Mouse.current.leftButton.isPressed)
+        //else if (Input.GetKey(KeyCode.Mouse0))
         {
             if (grappleRope.enabled)
             {
@@ -69,7 +72,8 @@ public class Tutorial_GrapplingGun : MonoBehaviour
             }
             else
             {
-                Vector2 mousePos = m_camera.ScreenToWorldPoint(Input.mousePosition);
+                // Vector2 mousePos = m_camera.ScreenToWorldPoint(Input.mousePosition);
+                Vector2 mousePos = m_camera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
                 RotateGun(mousePos, true);
             }
 
@@ -83,7 +87,8 @@ public class Tutorial_GrapplingGun : MonoBehaviour
                 }
             }
         }
-        else if (Input.GetKeyUp(KeyCode.Mouse0))
+        else if (Mouse.current.leftButton.wasReleasedThisFrame)
+        // else if (Input.GetKeyUp(KeyCode.Mouse0))
         {
             grappleRope.enabled = false;
             m_springJoint2D.enabled = false;
@@ -91,7 +96,8 @@ public class Tutorial_GrapplingGun : MonoBehaviour
         }
         else
         {
-            Vector2 mousePos = m_camera.ScreenToWorldPoint(Input.mousePosition);
+            // Vector2 mousePos = m_camera.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 mousePos = m_camera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
             RotateGun(mousePos, true);
         }
     }
@@ -113,7 +119,8 @@ public class Tutorial_GrapplingGun : MonoBehaviour
 
     void SetGrapplePoint()
     {
-        Vector2 distanceVector = m_camera.ScreenToWorldPoint(Input.mousePosition) - gunPivot.position;
+        // Vector2 distanceVector = m_camera.ScreenToWorldPoint(Input.mousePosition) - gunPivot.position;
+        Vector2 distanceVector = m_camera.ScreenToWorldPoint(Mouse.current.position.ReadValue()) - gunPivot.position;
         if (Physics2D.Raycast(firePoint.position, distanceVector.normalized))
         {
             RaycastHit2D _hit = Physics2D.Raycast(firePoint.position, distanceVector.normalized);
