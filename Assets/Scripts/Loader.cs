@@ -32,4 +32,19 @@ public class Loader : MonoBehaviour
 	{
 		SceneManager.LoadScene(0);
 	}
+
+	public void LoadStringwithString(string sceneName)
+	{
+		SceneManager.LoadScene(sceneName);
+	}
+
+	public void LoadStringwithIndex(int index)
+	{
+		SceneManager.LoadScene(index);
+	}
+
+	public void LoadLastScene()
+	{
+		SceneManager.LoadScene(SceneManager.sceneCount - 1);
+	}
 }

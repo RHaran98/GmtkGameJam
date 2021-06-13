@@ -80,9 +80,15 @@ public class Tutorial_GrapplingGun : MonoBehaviour
 
     private void Update()
     {
+        if (Keyboard.current.spaceKey.wasPressedThisFrame)
+        {
+            ReleaseGrapplingHook();
+        }
+
         if (!isEnabled)
             return;
-        if(Mouse.current.leftButton.wasPressedThisFrame)
+
+        if (Mouse.current.leftButton.wasPressedThisFrame)
         // if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             SetGrapplePoint();
