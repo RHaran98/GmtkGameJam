@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering.Universal;
 
 public class GrappleManager : MonoBehaviour
 {
     public Tutorial_GrapplingGun redGrapplingGun;
     public Tutorial_GrapplingGun blueGrapplingGun;
+
+    private Light2D light2D;
     private enum CurrentChance
     {
         Blue,
@@ -18,18 +21,14 @@ public class GrappleManager : MonoBehaviour
     void Start()
     {
         currentChance = CurrentChance.Blue;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        light2D = GetComponent<Light2D>();
     }
 
     public void OnRedGrapple()
 	{
         Debug.Log("Red grappled successfully");
         currentChance = CurrentChance.Blue;
+        light2D.color = new Color(0, 0, 1);
 
         redGrapplingGun.isEnabled = false;
 
@@ -39,6 +38,7 @@ public class GrappleManager : MonoBehaviour
     {
         Debug.Log("Blue grappled successfully");
         currentChance = CurrentChance.Red;
+        light2D.color = new Color(1, 0, 0);
 
         blueGrapplingGun.isEnabled = false;
 
