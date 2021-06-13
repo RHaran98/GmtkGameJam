@@ -63,8 +63,9 @@ public class TestMousePosition : MonoBehaviour
         if (!startedDraw)
             return;
         Vector2 direction = endPos - startPos;
-        Debug.Log(direction.normalized);
-        GetComponent<Rigidbody2D>().AddForce(-direction.normalized * 1000f);
+        GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+        GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
+        GetComponent<Rigidbody2D>().AddForce(-direction.normalized * 300f * direction.magnitude);
         // GetComponent<Rigidbody2D>().AddForce(Vector2.up * 500f);
     }
 }
