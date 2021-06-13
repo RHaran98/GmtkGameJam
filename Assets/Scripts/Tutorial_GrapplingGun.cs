@@ -3,12 +3,24 @@ using UnityEngine.InputSystem;
 
 public class Tutorial_GrapplingGun : MonoBehaviour
 {
+    public bool isEnabled = true;
+    
+    private enum CharType
+	{
+        Blue,
+        Red
+	}
+
+    [SerializeField]
+    private CharType charType;
+
     [Header("Scripts Ref:")]
     public Tutorial_GrapplingRope grappleRope;
 
     [Header("Layers Settings:")]
     [SerializeField] private bool grappleToAll = false;
     [SerializeField] private int grappableLayerNumber = 9;
+    [SerializeField] private LayerMask layerMask;
 
     [Header("Main Camera:")]
     public Camera m_camera;
@@ -49,15 +61,19 @@ public class Tutorial_GrapplingGun : MonoBehaviour
     [HideInInspector] public Vector2 grapplePoint;
     [HideInInspector] public Vector2 grappleDistanceVector;
 
+    private GrappleManager _gm;
+
     private void Start()
     {
         grappleRope.enabled = false;
         m_springJoint2D.enabled = false;
-
+        _gm = transform.parent.GetComponentInParent<GrappleManager>();
     }
 
     private void Update()
     {
+        if (!isEnabled)
+            return;
         if(Mouse.current.leftButton.wasPressedThisFrame)
         // if (Input.GetKeyDown(KeyCode.Mouse0))
         {
@@ -87,19 +103,32 @@ public class Tutorial_GrapplingGun : MonoBehaviour
                 }
             }
         }
-        else if (Mouse.current.leftButton.wasReleasedThisFrame)
-        // else if (Input.GetKeyUp(KeyCode.Mouse0))
+        /*else if (Mouse.current.leftButton.wasReleasedThisFrame)
+        //else if (Input.GetKeyUp(KeyCode.Mouse0))
         {
-            grappleRope.enabled = false;
-            m_springJoint2D.enabled = false;
-            m_rigidbody.gravityScale = 1;
-        }
+
+            if (charType == CharType.Blue)
+            {
+                _gm.OnBlueGrapple();
+            }
+            else
+            {
+                _gm.OnRedGrapple();
+            }
+        }*/
         else
         {
             // Vector2 mousePos = m_camera.ScreenToWorldPoint(Input.mousePosition);
             Vector2 mousePos = m_camera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
             RotateGun(mousePos, true);
         }
+    }
+
+    public void ReleaseGrapplingHook()
+	{
+        grappleRope.enabled = false;
+        m_springJoint2D.enabled = false;
+        m_rigidbody.gravityScale = 1;
     }
 
     void RotateGun(Vector3 lookPoint, bool allowRotationOverTime)
@@ -124,7 +153,8 @@ public class Tutorial_GrapplingGun : MonoBehaviour
         if (Physics2D.Raycast(firePoint.position, distanceVector.normalized))
         {
             RaycastHit2D _hit = Physics2D.Raycast(firePoint.position, distanceVector.normalized);
-            if (_hit.transform.gameObject.layer == grappableLayerNumber || grappleToAll)
+            if((layerMask.value & (1 << _hit.transform.gameObject.layer)) > 0)
+            // if (_hit.transform.gameObject.layer == grappableLayerNumber || grappleToAll)
             {
                 if (Vector2.Distance(_hit.point, firePoint.position) <= maxDistnace || !hasMaxDistance)
                 {
@@ -138,6 +168,14 @@ public class Tutorial_GrapplingGun : MonoBehaviour
 
     public void Grapple()
     {
+        if (charType == CharType.Blue)
+        {
+            _gm.OnBlueGrappleStart();
+        }
+        else
+        {
+            _gm.OnRedGrappleStart();
+        }
         m_springJoint2D.autoConfigureDistance = false;
         if (!launchToPoint && !autoConfigureDistance)
         {
@@ -173,6 +211,15 @@ public class Tutorial_GrapplingGun : MonoBehaviour
                     m_rigidbody.velocity = Vector2.zero;
                     break;
             }
+        }
+
+        if (charType == CharType.Blue)
+        {
+            _gm.OnBlueGrapple();
+        }
+        else
+        {
+            _gm.OnRedGrapple();
         }
     }
 
