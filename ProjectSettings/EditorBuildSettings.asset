@@ -9,6 +9,12 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 402306d28738bd74293b5e2e800f7d44
   - enabled: 1
-    path: Assets/Scenes/test_Kartikey.unity
-    guid: ac9acaa99b65a444cb5676e888e42870
+    path: Assets/Scenes/Level1.unity
+    guid: cff4ccc4b34223244bf794081312b0d1
+  - enabled: 1
+    path: Assets/Scenes/Level2.unity
+    guid: ca37ac19db7bcd241916496632171b92
+  - enabled: 1
+    path: Assets/Scenes/Lv3.unity
+    guid: b491741c1f33fa34e9be9a1fd655070f
   m_configObjects: {}
