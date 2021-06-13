@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 #if UNITY_EDITOR
 using NaughtyAttributes;
@@ -46,5 +45,11 @@ public class Loader : MonoBehaviour
 	public void LoadLastScene()
 	{
 		SceneManager.LoadScene(SceneManager.sceneCount - 1);
+	}
+
+	public void Update()
+	{
+		if (Keyboard.current.rKey.wasPressedThisFrame)
+			RestartScene();
 	}
 }
