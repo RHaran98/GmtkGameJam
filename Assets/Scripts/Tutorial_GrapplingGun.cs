@@ -72,7 +72,7 @@ public class Tutorial_GrapplingGun : MonoBehaviour
         m_springJoint2D.enabled = false;
         _gm = transform.parent.GetComponentInParent<GrappleManager>();
 
-        playerMask = ~(1 << gameObject.layer) & ~(1 << 10);
+        playerMask = ~(1 << gameObject.layer) & ~(1 << 10) & ~(1 << 11);
         // playerMask = ~(1 << gameObject.layer);
 
         // Physics2D.IgnoreLayerCollision(gameObject.layer, 10);
