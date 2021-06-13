@@ -61,6 +61,8 @@ public class Tutorial_GrapplingGun : MonoBehaviour
     [HideInInspector] public Vector2 grapplePoint;
     [HideInInspector] public Vector2 grappleDistanceVector;
 
+    private LayerMask playerMask;
+
     private GrappleManager _gm;
 
     private void Start()
@@ -68,6 +70,8 @@ public class Tutorial_GrapplingGun : MonoBehaviour
         grappleRope.enabled = false;
         m_springJoint2D.enabled = false;
         _gm = transform.parent.GetComponentInParent<GrappleManager>();
+
+        playerMask = ~(1 << gameObject.layer);
     }
 
     private void Update()
@@ -152,7 +156,7 @@ public class Tutorial_GrapplingGun : MonoBehaviour
         Vector2 distanceVector = m_camera.ScreenToWorldPoint(Mouse.current.position.ReadValue()) - gunPivot.position;
         if (Physics2D.Raycast(firePoint.position, distanceVector.normalized))
         {
-            RaycastHit2D _hit = Physics2D.Raycast(firePoint.position, distanceVector.normalized);
+            RaycastHit2D _hit = Physics2D.Raycast(firePoint.position, distanceVector.normalized, maxDistnace, playerMask);
             if((layerMask.value & (1 << _hit.transform.gameObject.layer)) > 0)
             // if (_hit.transform.gameObject.layer == grappableLayerNumber || grappleToAll)
             {
